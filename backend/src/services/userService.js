@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const userRepository = require('../repositories/userRepositories');
+
 const JWT_SECRET = process.env.JWT_SECRET
 
 class UserService {
@@ -9,12 +11,13 @@ class UserService {
         try{
             const user = await userRepository.findByEmail(email);
             if (!user) {
-                return res.status(400).json({error: "Credenciais errados"});
+                console.log("Usuário não encontrado no banco para o email:", email);
+                throw new Error("Usuário não existe");
             }
 
             const validPassword = await bcrypt.compare(senha, user.senha_hash);
             if (!validPassword) {
-                return res.status(400).json({error: "Credenciais invalidas"});
+                throw new Error("Senha incorreta"); // Mudei a mensagem temporariamente para sabermos onde falha
             }
 
             const token = jwt.sign(
@@ -28,9 +31,9 @@ class UserService {
                 user: { id: user.id, nome: user.nome, role: user.role }
             };
             
-        } catch (error){
-            console.error(error);
-            res.status(500).json({error: "Erro no login"});
+        } catch (error) {
+            console.error(error); 
+            throw new Error(error.message); 
         }
     }
 }
