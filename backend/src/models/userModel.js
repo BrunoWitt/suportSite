@@ -7,3 +7,5 @@ class User{
         this.role = role;
     }
 }
+
+module.exports = User;
