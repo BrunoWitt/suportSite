@@ -4,8 +4,7 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET
 
 class UserService {
-    async login(req, res){
-        const {email, senha} =  req.body;
+    async login(email, senha){
 
         try{
             const user = await userRepository.findByEmail(email);
@@ -24,7 +23,10 @@ class UserService {
                 { expiresIn: '1d'}
             );
 
-            res.json({token, user: {id: user.id, nome: user.nome, role: user.role}});
+            return {
+                token, 
+                user: { id: user.id, nome: user.nome, role: user.role }
+            };
             
         } catch (error){
             console.error(error);
