@@ -5,8 +5,14 @@ const cors = require('cors');
 require('dotenv').config();
 require('./config/db');
 
+//Swagger
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 //Inicialização do projeto
 const app = express();
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(cors());
 app.use(express.json());
