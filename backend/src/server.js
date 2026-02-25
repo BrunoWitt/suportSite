@@ -12,10 +12,10 @@ app.use(cors());
 app.use(express.json());
 
 //Importação das rotas
-
+const authRoute = require('./routes/authRoute');
 
 //Uso das rotas
-
+app.use('/auth', authRoute);
 
 app.get('/', (req, res) => {
     res.json({ message: 'Servidor de Suporte Rodando!' });
