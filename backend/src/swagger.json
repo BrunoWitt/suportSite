@@ -3,50 +3,64 @@
     "info": {
         "title": "API de Suporte",
         "version": "1.0.0",
-        "description": "Documentação e testes da API do Sistema de Suporte"
+        "description": "Documentação com suporte a JWT"
     },
-    "servers": [
-        {
-        "url": "http://localhost:3001",
-        "description": "Servidor Local"
+    "servers": [{ "url": "http://localhost:3001" }],
+    "components": {
+        "securitySchemes": {
+        "bearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
         }
-    ],
+        }
+    },
+    "security": [{ "bearerAuth": [] }],
     "paths": {
         "/auth/login": {
         "post": {
-            "summary": "Faz o login do usuário",
             "tags": ["Autenticação"],
+            "summary": "Login do utilizador",
             "requestBody": {
-            "required": true,
             "content": {
                 "application/json": {
                 "schema": {
                     "type": "object",
                     "properties": {
-                    "email": {
-                        "type": "string",
-                        "example": "teste@email.com"
-                    },
-                    "senha": {
-                        "type": "string",
-                        "example": "123456"
-                    }
+                    "email": { "type": "string", "example": "admin@suporte.com" },
+                    "senha": { "type": "string", "example": "123456" }
                     }
                 }
                 }
             }
             },
-            "responses": {
-            "200": {
-                "description": "Login realizado com sucesso"
-            },
-            "400": {
-                "description": "Erro nas credenciais"
-            },
-            "500": {
-                "description": "Erro interno do servidor"
+            "responses": { "200": { "description": "OK" } }
+        }
+        },
+        "/tickets": {
+        "post": {
+            "tags": ["Tickets"],
+            "summary": "Abrir novo ticket",
+            "requestBody": {
+            "content": {
+                "application/json": {
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                    "title": { "type": "string", "example": "Erro no Login" },
+                    "description": { "type": "string", "example": "Não consigo entrar" },
+                    "prioridade": { "type": "string", "example": "ALTA" }
+                    }
+                }
+                }
             }
-            }
+            },
+            "responses": { "201": { "description": "Criado" } }
+        },
+        "get": {
+            "tags": ["Tickets"],
+            "summary": "Listar meus tickets",
+            "responses": { "200": { "description": "Lista de tickets" } }
         }
         }
     }

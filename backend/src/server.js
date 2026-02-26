@@ -19,9 +19,11 @@ app.use(express.json());
 
 //Importação das rotas
 const authRoute = require('./routes/authRoute');
+const ticketRoute = require('./routes/ticketRoute');
 
 //Uso das rotas
 app.use('/auth', authRoute);
+app.use('/tickets', ticketRoute);
 
 app.get('/', (req, res) => {
     res.json({ message: 'Servidor de Suporte Rodando!' });
