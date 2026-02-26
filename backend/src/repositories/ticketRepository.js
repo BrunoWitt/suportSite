@@ -38,6 +38,20 @@ class TicketRepository {
     }
 
 
+    async updateTicketStatus(id, status) {
+        const query = 'UPDATE tickets SET status = $1 WHERE id = $2 RETURNING *';
+        const values = [status, id];
+        try {
+            const result = await db.query(query, values);
+            const row = result.rows[0];
+            return new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.client_id, row.agente_id);
+        } catch (error) {
+            console.error('Erro ao atualizar status do ticket:', error);
+            throw error;
+        }
+    }
+
+
     //Deletar ticket
     async deleteTicket(id) {
         const query = 'DELETE FROM tickets WHERE id = $1';

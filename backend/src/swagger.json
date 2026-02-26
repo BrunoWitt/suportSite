@@ -1,11 +1,16 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API de Suporte",
+        "title": "API de Suporte - Sistema de Tickets",
         "version": "1.0.0",
-        "description": "Documentação com suporte a JWT"
+        "description": "Documentação completa para testes de Autenticação e Gestão de Tickets."
     },
-    "servers": [{ "url": "http://localhost:3001" }],
+    "servers": [
+        {
+        "url": "http://localhost:3001",
+        "description": "Servidor Local"
+        }
+    ],
     "components": {
         "securitySchemes": {
         "bearerAuth": {
@@ -15,13 +20,19 @@
         }
         }
     },
-    "security": [{ "bearerAuth": [] }],
+    "security": [
+        {
+        "bearerAuth": []
+        }
+    ],
     "paths": {
         "/auth/login": {
         "post": {
             "tags": ["Autenticação"],
-            "summary": "Login do utilizador",
+            "summary": "Realiza o login e retorna o Token JWT",
+            "security": [],
             "requestBody": {
+            "required": true,
             "content": {
                 "application/json": {
                 "schema": {
@@ -34,33 +45,126 @@
                 }
             }
             },
-            "responses": { "200": { "description": "OK" } }
+            "responses": {
+            "200": { "description": "Login bem-sucedido" },
+            "401": { "description": "Credenciais inválidas" }
+            }
         }
         },
         "/tickets": {
+        "get": {
+            "tags": ["Tickets"],
+            "summary": "Lista os tickets (Admin vê todos, Cliente vê apenas os seus)",
+            "responses": {
+            "200": { "description": "Lista de tickets retornada com sucesso" }
+            }
+        },
         "post": {
             "tags": ["Tickets"],
-            "summary": "Abrir novo ticket",
+            "summary": "Abre um novo chamado de suporte",
             "requestBody": {
+            "required": true,
             "content": {
                 "application/json": {
                 "schema": {
                     "type": "object",
                     "properties": {
-                    "title": { "type": "string", "example": "Erro no Login" },
-                    "description": { "type": "string", "example": "Não consigo entrar" },
+                    "title": { "type": "string", "example": "Erro no sistema" },
+                    "description": { "type": "string", "example": "Não consigo aceder ao painel" },
                     "prioridade": { "type": "string", "example": "ALTA" }
                     }
                 }
                 }
             }
             },
-            "responses": { "201": { "description": "Criado" } }
+            "responses": {
+            "201": { "description": "Ticket criado com sucesso" }
+            }
+        }
         },
+        "/tickets/{id}": {
         "get": {
             "tags": ["Tickets"],
-            "summary": "Listar meus tickets",
-            "responses": { "200": { "description": "Lista de tickets" } }
+            "summary": "Busca detalhes de um ticket específico",
+            "parameters": [
+            { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+            ],
+            "responses": {
+            "200": { "description": "Dados do ticket" }
+            }
+        }
+        },
+        "/tickets/{id}/status": {
+        "patch": {
+            "tags": ["Tickets"],
+            "summary": "Atualiza o status do ticket",
+            "parameters": [
+            { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+            ],
+            "requestBody": {
+            "content": {
+                "application/json": {
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                    "status": { "type": "string", "example": "EM ANDAMENTO" }
+                    }
+                }
+                }
+            }
+            },
+            "responses": {
+            "200": { "description": "Status atualizado" }
+            }
+        }
+        },
+        "/tickets/{id}/assign": {
+        "patch": {
+            "tags": ["Tickets"],
+            "summary": "Assinala um agente responsável ao ticket",
+            "parameters": [
+            { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+            ],
+            "requestBody": {
+            "content": {
+                "application/json": {
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                    "agenteId": { "type": "string", "example": 1 }
+                    }
+                }
+                }
+            }
+            },
+            "responses": {
+            "200": { "description": "Agente assinalado com sucesso" }
+            }
+        }
+        },
+        "/tickets/{id}/participants": {
+        "post": {
+            "tags": ["Tickets"],
+            "summary": "Adiciona um colaborador/participante ao ticket",
+            "parameters": [
+            { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+            ],
+            "requestBody": {
+            "content": {
+                "application/json": {
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                    "userId": { "type": "string", "example": 2 },
+                    "role": { "type": "string", "example": "AGENTE" }
+                    }
+                }
+                }
+            }
+            },
+            "responses": {
+            "200": { "description": "Participante adicionado" }
+            }
         }
         }
     }
