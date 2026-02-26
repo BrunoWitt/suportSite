@@ -31,16 +31,34 @@ class TicketService {
     }
 
 
-    async assignTicket(ticketId, agenteId) {
+    async assignAgent(ticketId, agenteId) {
         try {
-            const ticketAtualizado = await ticketRepository.assignTicket(ticketId, agenteId);
-            if (!ticketAtualizado) {
-                throw new Error("Chamado não encontrado para atribuição.");
-            }
-            return ticketAtualizado;
+            const ticket = await ticketRepository.getTicketById(ticketId);
+            if (!ticket) throw new Error("Ticket não encontrado.");
+
+            const updatedTicket = await ticketRepository.updateTicket(
+                ticketId,
+                ticket.title,
+                ticket.description,
+                'EM ANDAMENTO', // Geralmente muda o status ao atribuir
+                ticket.prioridade,
+                agenteId
+            );
+
+            await ticketRepository.addParticipant(ticketId, agenteId, 'RESPONSÁVEL');
+
+            return updatedTicket;
         } catch (error) {
-            console.error("Erro no TicketService ao atribuir ticket:", error);
-            throw new Error("Não foi possível atribuir o chamado no momento.");
+            throw new Error("Erro ao atribuir agente: " + error.message);
+        }
+    }
+
+
+    async addCollaborator(ticketId, collaboratorId) {
+        try {
+            return await ticketRepository.addParticipant(ticketId, collaboratorId, 'AGENTE');
+        } catch (error) {
+            throw new Error("Erro ao adicionar colaborador: " + error.message);
         }
     }
 
