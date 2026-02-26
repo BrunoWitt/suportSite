@@ -6,3 +6,5 @@ class TicketParticipants {
         this.joined_at = joined_at;
     }
 }
+
+module.exports = TicketParticipants;

@@ -9,3 +9,5 @@ class Ticket{
         this.agente_id = agente_id;
     }
 }
+
+module.exports = Ticket;

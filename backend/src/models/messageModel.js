@@ -8,3 +8,5 @@ class Message {
         this.created_at = created_at;
     }
 }
+
+module.exports = Message;
