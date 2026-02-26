@@ -56,4 +56,27 @@ router.patch('/:id/status', authMiddleware, async (req, res) => {
     }
 });
 
+
+router.patch('/:id/assign', authMiddleware, async (req, res) => {
+    try {
+        const { agenteId } = req.body;
+        const result = await ticketService.assignAgent(req.params.id, agenteId);
+        res.json(result);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+
+// Adicionar mais um agente/participante
+router.post('/:id/participants', authMiddleware, async (req, res) => {
+    try {
+        const { userId, role } = req.body; // role pode ser 'AGENTE'
+        const result = await ticketService.addCollaborator(req.params.id, userId);
+        res.json(result);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
 module.exports = router;
