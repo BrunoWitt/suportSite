@@ -31,6 +31,20 @@ class TicketService {
     }
 
 
+    async assignTicket(ticketId, agenteId) {
+        try {
+            const ticketAtualizado = await ticketRepository.assignTicket(ticketId, agenteId);
+            if (!ticketAtualizado) {
+                throw new Error("Chamado não encontrado para atribuição.");
+            }
+            return ticketAtualizado;
+        } catch (error) {
+            console.error("Erro no TicketService ao atribuir ticket:", error);
+            throw new Error("Não foi possível atribuir o chamado no momento.");
+        }
+    }
+
+
     async listTicketsByClient(clientId) {
         try {
             return await ticketRepository.getTicketsByClientId(clientId);
