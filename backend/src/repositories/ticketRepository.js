@@ -6,7 +6,7 @@ const TicketParticipants = require('../models/ticketParticipantsModel');
 class TicketRepository {
     //Inserir ticket
     async createTicket(title, description, status, prioridade, client_id, agente_id) {
-        const query = 'INSERT INTO tickets (title, description, status, prioridade, client_id, agente_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+        const query = 'INSERT INTO tickets (title, description, status, prioridade, cliente_id, agente_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
         const values = [title, description, status, prioridade, client_id, agente_id];
 
         try {
@@ -83,7 +83,7 @@ class TicketRepository {
 
     //Listar tickets por cliente
     async getTicketsByClientId(client_id) {
-        const query = 'SELECT * FROM tickets WHERE client_id = $1';
+        const query = 'SELECT * FROM tickets WHERE cliente_id = $1';
         try {
             const result = await db.query(query, [client_id]);
             return result.rows.map(row => new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.client_id, row.agente_id));
