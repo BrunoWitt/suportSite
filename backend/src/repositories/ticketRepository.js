@@ -13,7 +13,7 @@ class TicketRepository {
             const result = await db.query(query, values);
             const row = result.rows[0];
 
-            return new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.client_id, row.agente_id);
+            return new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.cliente_id, row.agente_id);
         } catch (error) {
             console.error('Erro ao criar ticket:', error);
             throw error;
@@ -30,7 +30,7 @@ class TicketRepository {
             const result = await db.query(query, values);
             const row = result.rows[0];
 
-            return new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.client_id, row.agente_id);
+            return new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.cliente_id, row.agente_id);
         } catch (error) {
             console.error('Erro ao atualizar ticket:', error);
             throw error;
@@ -44,7 +44,7 @@ class TicketRepository {
         try {
             const result = await db.query(query, values);
             const row = result.rows[0];
-            return new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.client_id, row.agente_id);
+            return new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.cliente_id, row.agente_id);
         } catch (error) {
             console.error('Erro ao atualizar status do ticket:', error);
             throw error;
@@ -74,7 +74,7 @@ class TicketRepository {
                 return null;
             }
             const row = result.rows[0];
-            return new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.client_id, row.agente_id);
+            return new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.cliente_id, row.agente_id);
         } catch (error) {
             console.error('Erro ao buscar ticket por ID:', error);
             throw error;
@@ -87,7 +87,7 @@ class TicketRepository {
         const query = 'SELECT * FROM tickets';
         try {
             const result = await db.query(query);
-            return result.rows.map(row => new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.client_id, row.agente_id));
+            return result.rows.map(row => new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.cliente_id, row.agente_id));
         } catch (error) {
             console.error('Erro ao buscar todos os tickets:', error);
             throw error;
@@ -100,7 +100,7 @@ class TicketRepository {
         const query = 'SELECT * FROM tickets WHERE cliente_id = $1';
         try {
             const result = await db.query(query, [client_id]);
-            return result.rows.map(row => new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.client_id, row.agente_id));
+            return result.rows.map(row => new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.cliente_id, row.agente_id));
         } catch (error) {
             console.error('Erro ao buscar tickets por cliente:', error);
             throw error;
@@ -113,7 +113,7 @@ class TicketRepository {
         const query = 'SELECT * FROM tickets WHERE agente_id = $1';
         try {
             const result = await db.query(query, [agente_id]);
-            return result.rows.map(row => new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.client_id, row.agente_id));
+            return result.rows.map(row => new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.cliente_id, row.agente_id));
         } catch (error) {
             console.error('Erro ao buscar tickets por agente:', error);
             throw error;
@@ -126,7 +126,7 @@ class TicketRepository {
         const query = 'SELECT * FROM tickets WHERE status = $1';
         try {
             const result = await db.query(query, [status]);
-            return result.rows.map(row => new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.client_id, row.agente_id));
+            return result.rows.map(row => new Ticket(row.id, row.title, row.description, row.status, row.prioridade, row.cliente_id, row.agente_id));
         }
         catch (error) {
             console.error('Erro ao buscar tickets por status:', error);
