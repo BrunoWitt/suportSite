@@ -40,13 +40,12 @@ class TicketService {
                 ticketId,
                 ticket.title,
                 ticket.description,
-                'EM ANDAMENTO', // Geralmente muda o status ao atribuir
+                'EM_ANDAMENTO', 
                 ticket.prioridade,
                 agenteId
             );
 
             await ticketRepository.addParticipant(ticketId, agenteId, 'RESPONSÁVEL');
-
             return updatedTicket;
         } catch (error) {
             throw new Error("Erro ao atribuir agente: " + error.message);
@@ -108,7 +107,7 @@ class TicketService {
 
 
     async updateTicketStatus(ticketId, newStatus) {
-        const validStatuses = ['ABERTO', 'EM ANDAMENTO', 'FECHADO'];
+        const validStatuses = ['ABERTO', 'EM_ANDAMENTO', 'FECHADO'];
         if (!validStatuses.includes(newStatus)) {
             throw new Error("Status inválido. Os status válidos são: ABERTO, EM ANDAMENTO, FECHADO.");
         }
