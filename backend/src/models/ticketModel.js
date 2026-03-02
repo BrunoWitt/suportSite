@@ -5,7 +5,7 @@ class Ticket{
         this.description = description;
         this.status = status;
         this.prioridade = prioridade;
-        this.client_id = client_id;
+        this.cliente_id = client_id;
         this.agente_id = agente_id;
     }
 }
