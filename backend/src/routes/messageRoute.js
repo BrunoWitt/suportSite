@@ -9,8 +9,10 @@ router.post('/:ticketId', authMiddleware, async (req, res) => {
         const { content } = req.body;
         const { ticketId } = req.params;
         
-        // req.user.id vem do token JWT validado pelo middleware
         const mensagem = await messageService.sendMessage(req.user.id, ticketId, content);
+
+        req.io.to(`ticket_${ticketId}`).emit('newMessage', mensagem);
+
         return res.status(201).json(mensagem);
     } catch (error) {
         return res.status(400).json({ error: error.message });
